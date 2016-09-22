@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Daemon</string>
+    <string name="account_auth_type">com.tony.daemon.account.type</string>
+    <string name="account_auth_provide">com.tony.daemon.account.provide</string>
+</resources>
