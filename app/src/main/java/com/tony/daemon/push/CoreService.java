@@ -34,6 +34,7 @@ public class CoreService extends Service {
 
     @Override
     public void onCreate() {
+        Log.e("123", "CoreService onCreate");
         super.onCreate();
         startForegroundService();
         mThread = new Thread(new Runnable() {

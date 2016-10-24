@@ -72,7 +72,7 @@ public class NotifyReceiver extends BroadcastReceiver {
         public static final String ALARM_ACTION = "com.tony.daemon.alarm";
         public static final String JOB_ACTION = "com.tony.daemon.job";
 
-        private static final long INTERVAL_TIME = AlarmManager.INTERVAL_HALF_HOUR;//轮询间隔
+        private static final long INTERVAL_TIME = 1000 * 60 * 3;//轮询间隔  3min
 
         @Nullable
         @Override
