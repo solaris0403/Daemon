@@ -20,6 +20,7 @@ import android.os.SystemClock;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.tony.daemon.push.CoreService;
 
@@ -31,7 +32,7 @@ public class NotifyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogUtils.i(intent.getAction());
+        Log.e("123", intent.getAction());
         AppContext.getInstance().startService(new Intent(AppContext.getInstance(), CoreService.class));
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED://开机
@@ -55,29 +56,13 @@ public class NotifyReceiver extends BroadcastReceiver {
                     AppContext.getInstance().startService(pollIntent);
                 }
                 break;
-            case NotifyService.JOB_ACTION://定时闹钟
+            case NotifyService.JOB_ACTION://定时job
                 break;
             case NotificationListener.ACTION_NOTIFICATION:
                 break;
             default:
                 break;
         }
-
-
-        //效率vs扩展 如果效率低可以放so
-//        if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-//            //检查Service状态
-//            ActivityManager manager = (ActivityManager) AppContext.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
-//            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-//                if (CoreService.ACTION_NAME.equals(service.service.getClassName(drfc`))) {
-//                    isServiceRunning = true;
-//                }
-//            }
-//            if (!isServiceRunning) {
-//                Intent i = new Intent(context, CoreService.class);
-//                context.startService(i);
-//            }
-//        }
     }
 
     public static class NotifyService extends Service {
@@ -207,12 +192,10 @@ public class NotifyReceiver extends BroadcastReceiver {
         @Override
         public void onCreate() {
             super.onCreate();
-            LogUtils.i("NotificationListener onCreate");
         }
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            LogUtils.i("onStartCommand");
             return Service.START_STICKY;
         }
 
@@ -220,14 +203,12 @@ public class NotifyReceiver extends BroadcastReceiver {
         public void onNotificationPosted(StatusBarNotification sbn) {
             super.onNotificationPosted(sbn);
             sendBroadcast(new Intent(ACTION_NOTIFICATION));
-            LogUtils.i("onNotificationPosted");
         }
 
         @Override
         public void onNotificationRemoved(StatusBarNotification sbn) {
             super.onNotificationRemoved(sbn);
             sendBroadcast(new Intent(ACTION_NOTIFICATION));
-            LogUtils.i("onNotificationRemoved");
         }
     }
 
@@ -237,25 +218,21 @@ public class NotifyReceiver extends BroadcastReceiver {
         @Override
         public void onCreate() {
             super.onCreate();
-            LogUtils.i("onCreate");
         }
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            LogUtils.i("onStartCommand");
             return Service.START_STICKY;
         }
 
         @Override
         public boolean onStartJob(JobParameters jobParameters) {
-            LogUtils.i("onStartJob");
             sendBroadcast(new Intent(NotifyService.JOB_ACTION));
             return false;
         }
 
         @Override
         public boolean onStopJob(JobParameters jobParameters) {
-            LogUtils.i("onStopJob");
             return false;
         }
     }

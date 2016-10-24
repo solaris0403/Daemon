@@ -58,12 +58,12 @@ public class CoreService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtils.i("onStartCommand");
         return Service.START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        Log.e("123", "onDestroy");
         if (mThread.isAlive()) {
             mThread.interrupt();
         }
@@ -142,7 +142,7 @@ public class CoreService extends Service {
                 client.linkToDeath(new DeathRecipient() {
                     @Override
                     public void binderDied() {
-                        LogUtils.i("client died");
+                        Log.e("123", "client died");
                         startService(new Intent(CoreService.this, NotifyReceiver.NotifyService.class));
                     }
                 }, 0);
